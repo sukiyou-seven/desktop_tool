@@ -1,0 +1,70 @@
+apifox.yml:
+    project_id:  项目id
+    api_token: 账号token
+    folder_id: 接口文件夹id
+    model_id: 模型文件夹id
+
+app.yml:
+    app:
+        # Use uwsgi to start developing production environments only begin
+        host: 0.0.0.0  测试环境 监听地址
+        port: 53100     测试环境 端口号
+        port_check: false 测试环境 是否自动检测端口冲突性
+        debug: true         测试环境 是否开启debug模式
+        log_route: false        测试环境 是否在控制台输出路由
+        file_route: true        测试环境 是否生成路由文件 route.txt
+        apifox: 'http://'       测试环境 已弃用
+        # Use uwsgi to start developing production environments only end
+
+        resources: '/*'                         配置
+        origins: '*'                            配置
+        allow_headers: "*"                      配置
+        expose_headers: "*"                     配置
+        supports_credentials: true              配置
+        methods: [ 'GET', 'POST','OPTIONS' ]    配置
+        open_get: false                         是否允许get访问 - 似乎已弃用
+        image_prefix: 'http://localhost:52100/static/'  图片资源前缀
+
+
+
+    mysql:
+        host: 0.0.0.0
+        port: 3306
+        user: 0
+        password: 0
+        database: 0
+
+    #mongo:
+    #    host: 61.160.195.251
+    #    port: 45832
+    #    database: tiktok_japan
+    #    username: tiktok_japan
+    #    password: xhNeyZLYz3Kmc6nm
+    #    auth_source: tiktok_japan
+
+    mongo:
+        host: 8.137.106.132
+        port: 27017
+        database: hmzp_test
+        username: hmzp_test
+        password: CHANGE_ME_MONGO_PASSWORD
+        auth_source: hmzp_test
+
+    REDIS:
+        REDIS_HOST: 8.137.106.132
+        REDIS_PORT: 6379
+        REDIS_PASSWORD: CHANGE_ME_REDIS_PASSWORD
+        REDIS_DB: 6
+        REDIS_CACHE_TIMEOUT: 25920000
+
+    TX:
+        SECRET_ID: CHANGE_ME_TX_SECRET_ID
+        SECRET_KEY: CHANGE_ME_TX_SECRET_KEY
+        FIREWALL_TEMPLATE_ID: lhft-qzy6pvtv
+        BY_NUMBER: 20
+        DRY_RUN: False
+
+
+secret.yml: # token 生成密钥
+    secret: CHANGE_ME_TOKEN_SECRET
+    iss: huamai_ai_zupu_application

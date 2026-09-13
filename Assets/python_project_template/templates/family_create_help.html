@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>族谱系统操作帮助说明</title>
+    <style>
+        :root {
+            --bg: #f7f3ec;
+            --card: #ffffff;
+            --accent: #a83232;
+            --accent-dark: #7d2424;
+            --gold: #b8860b;
+            --ink: #2b2620;
+            --muted: #7a7265;
+            --line: #ece5d8;
+            --tip-bg: #fdf6e3;
+            --tip-border: #e0b84e;
+            --info-bg: #eef4fb;
+            --info-border: #5b8dd6;
+            --ok-bg: #eef8ee;
+            --ok-border: #5aa75a;
+        }
+
+        html, body {
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.8;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #7d2424 0%, #a83232 55%, #c45a3c 100%);
+            color: #fff;
+            padding: 44px 20px 38px;
+            text-align: center;
+        }
+
+        .banner h1 {
+            margin: 0 0 8px;
+            font-size: 1.9rem;
+            letter-spacing: 4px;
+        }
+
+        .banner p {
+            margin: 0 auto;
+            max-width: 720px;
+            font-size: .98rem;
+            opacity: .92;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: -18px auto 48px;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(80, 50, 20, .06);
+            padding: 26px 30px;
+            margin-bottom: 22px;
+        }
+
+        .flow-card {
+            border-left: 5px solid var(--accent);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 14px;
+            font-size: 1.25rem;
+            color: var(--accent-dark);
+        }
+
+        .section-title .no {
+            flex: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .95rem;
+        }
+
+        h3 {
+            margin: 20px 0 8px;
+            font-size: 1.05rem;
+            color: var(--ink);
+        }
+
+        p { margin: 8px 0; }
+
+        ol, ul { margin: 8px 0 8px 22px; padding: 0; }
+
+        li { margin: 6px 0; }
+
+        strong { color: var(--accent-dark); }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 14px 0;
+            counter-reset: step;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: #fbf7f0;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .step-item .badge {
+            flex: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: #fff;
+            font-size: .85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4px;
+        }
+
+        .tip {
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 14px 0;
+            font-size: .95rem;
+        }
+
+        .tip-warn { background: var(--info-bg); border-left: 4px solid var(--info-border); }
+        .tip-note { background: var(--tip-bg); border-left: 4px solid var(--tip-border); }
+        .tip-ok   { background: var(--ok-bg);   border-left: 4px solid var(--ok-border); }
+
+        .tip strong { display: block; margin-bottom: 2px; }
+
+        .field-list li {
+            padding-left: 4px;
+        }
+
+        .field-list li strong:first-child {
+            color: var(--accent-dark);
+            display: inline-block;
+            min-width: 96px;
+        }
+
+        .summary {
+            background: linear-gradient(180deg, #fffdf8, #fbf5ea);
+            border: 1px dashed var(--gold);
+        }
+
+        .summary .section-title { color: var(--gold); }
+        .summary .section-title .no { background: var(--gold); }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem;
+            padding: 8px 0 28px;
+        }
+
+        @media (max-width: 640px) {
+            .banner h1 { font-size: 1.4rem; letter-spacing: 2px; }
+            .card { padding: 20px 18px; }
+            .field-list li strong:first-child { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="banner">
+    <h1>族谱系统操作帮助说明</h1>
+    <p>按顺序完成「字辈分支 → 家族人员 → 祖训家规」三大步骤，即可快速建立规范、完整的家族谱系。</p>
+</div>
+
+<div class="container">
+
+    <!-- 整体操作顺序 -->
+    <div class="card flow-card">
+        <h2 class="section-title">整体操作顺序</h2>
+        <p>使用本系统录入家族信息，请<strong>按照顺序操作</strong>：</p>
+        <div class="steps">
+            <div class="step-item">
+                <span class="badge">1</span>
+                <div><strong>设置家族字辈分支</strong><br>录入辈分用字与房系分支，作为后续添加成员的基础资料。</div>
+            </div>
+            <div class="step-item">
+                <span class="badge">2</span>
+                <div><strong>添加家族人员</strong><br>选择字辈、分支，逐条录入家族成员并绑定父辈关系。</div>
+            </div>
+            <div class="step-item">
+                <span class="badge">3</span>
+                <div><strong>设置家族祖训家规</strong><br>录入祖训标题、正文、出处，并决定是否在首页展示。</div>
+            </div>
+        </div>
+        <div class="tip tip-warn">
+            <strong>重要提醒</strong>
+            字辈与分支是基础资料，新增家族成员时需要直接选用已经建好的字辈、分支。如果没有提前设置，新增人员无法正常填写辈分和房系信息。
+        </div>
+    </div>
+
+    <!-- 一、家族字辈与分支设置 -->
+    <div class="card">
+        <h2 class="section-title"><span class="no">一</span>家族字辈与分支设置</h2>
+        <p>本功能用来录入家族世代辈分用字、各个家族房系分支。后续添加家人的时候，直接在这里选择已经录入好的内容，保证整个家族辈分、房系统一规范。</p>
+
+        <h3>1. 字辈</h3>
+        <p>家族每一代人名字中间固定使用的汉字，比如 “钦”“遵”“道”“德”，代表一代人的辈分。建议按照辈分从老到少依次录入，先录入祖辈，再录入父辈，接着录入子辈、孙辈。</p>
+
+        <h3>2. 分支</h3>
+        <p>家族内部的房系划分，用来区分不同支派，例如嫡系、长房支、二房支、旁系分支。同一个家族可以建立多个不同分支。</p>
+
+        <div class="tip tip-note">
+            <strong>注意</strong>
+            新增家族成员时，辈分、分支只能选择这里已经保存好的内容，不能随意填写自定义文字。
+        </div>
+    </div>
+
+    <!-- 二、添加家族人员 -->
+    <div class="card">
+        <h2 class="section-title"><span class="no">二</span>添加家族人员</h2>
+
+        <div class="tip tip-warn">
+            <strong>前置要求</strong>
+            必须已经完成【家族字辈与分支设置】。新增家人需要选择对应的字辈与分支。
+        </div>
+
+        <p>新增家人有两种绑定父亲的方式，推荐优先使用<strong>用户 ID 关联</strong>。</p>
+
+        <h3>1. 关联父辈方式一：用户 ID 关联（推荐）</h3>
+        <p>选择该方式后，直接选择系统中已经录入好的父亲信息，系统自动读取父亲编号完成关系绑定，不需要手动填写父亲姓名。</p>
+
+        <h3>2. 关联父辈方式二：身份证号关联</h3>
+        <p>选择该方式，填写父亲的身份证号码来匹配父辈，同时需要手动填写父亲真实姓名。</p>
+
+        <h3>需要填写的人员信息说明</h3>
+        <ol class="field-list">
+            <li><strong>真实姓名：</strong>填写该家族成员的完整真实名字。</li>
+            <li><strong>性别：</strong>选择男或者女。</li>
+            <li><strong>身份证号码：</strong>填写成员身份证，用于辅助推算传统干支生辰。</li>
+            <li><strong>公历生日：</strong>选择公历的出生年月日。只需要填写公历日期，系统会自动换算出传统干支生辰；如果自动换算结果不符合实际，也可以手动修改干支生辰。</li>
+            <li><strong>干支生辰：</strong>传统农历干支纪年记录出生时间，例如 “丙午年 丙申月 戊午日 丙辰时”。可以由公历生日自动生成，也支持自己手动输入修改。</li>
+            <li><strong>身份称谓：</strong>选定父亲之后，选择该子女在家中的身份，可选：嫡长子、嫡次子、嫡三子、庶长子、庶次子、庶三子、嫡长女、嫡次女、嫡三女、庶长女、庶次女、庶三女。</li>
+            <li><strong>字辈：</strong>从前面已经设置好的字辈列表当中，选择此人所属辈分用字，父子两代辈分不能相同。</li>
+            <li><strong>分支：</strong>从前面已经设置好的分支列表当中，选择该成员归属的家族房系分支。</li>
+        </ol>
+
+        <div class="tip tip-ok">
+            <strong>填写小提示</strong>
+            <ul>
+                <li>字辈要符合家族世代逻辑，父亲和子女不能使用同一套字辈。</li>
+                <li>身份称谓根据父辈正庶地位、子女排行来选择，如实记录家族关系。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 三、家族祖训家规设置 -->
+    <div class="card">
+        <h2 class="section-title"><span class="no">三</span>家族祖训家规设置</h2>
+        <p>录入家族人员完成后，可以录入本家族的祖训、家训、家规内容。可以保存多条祖训。</p>
+
+        <ol class="field-list">
+            <li><strong>祖训标题：</strong>填写家训的标题，例如《白氏祖训总纲》《居家修身训》，会在祖训列表页面展示。</li>
+            <li><strong>祖训正文：</strong>填写祖训、家规完整文字内容，可以录入大段文字。</li>
+            <li><strong>出处来源：</strong>记录这份祖训来自哪里，例如祠堂碑刻、旧族谱摘抄、后世族老整理编撰。</li>
+            <li><strong>是否在家族首页展示</strong>
+                <ul>
+                    <li><strong>开启：</strong>这条祖训会直接显示在家族首页，供所有人查看，适合家族总纲类重要祖训。</li>
+                    <li><strong>关闭：</strong>仅在祖训专门页面可以查看，不会出现在家族首页，适合存档备用、次要家训。</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- 完整操作流程总结 -->
+    <div class="card summary">
+        <h2 class="section-title"><span class="no">✓</span>完整操作流程总结</h2>
+        <div class="steps">
+            <div class="step-item">
+                <span class="badge">1</span>
+                <div><strong>第一步：维护家族基础信息</strong><br>录入家族所有字辈、各个分支房系。</div>
+            </div>
+            <div class="step-item">
+                <span class="badge">2</span>
+                <div>
+                    <strong>第二步：新增家族人员</strong>
+                    <ol style="margin-top:4px;">
+                        <li>选择绑定父亲的方式，关联到家族内已有的父辈；</li>
+                        <li>填写姓名、性别、身份证、公历生日；</li>
+                        <li>系统自动生成干支生辰，如有需要手动调整；</li>
+                        <li>选择身份称谓，选择对应字辈、所属分支，保存完成人员新增。</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="step-item">
+                <span class="badge">3</span>
+                <div><strong>第三步：录入家族祖训</strong><br>填写标题、正文、出处，选择是否在首页展示，保存祖训。</div>
+            </div>
+        </div>
+
+        <div class="tip tip-note">
+            <strong>补充提示</strong>
+            如果需要修改字辈、人员信息、祖训内容，可以进入对应页面找到记录进行编辑修改；不再使用的内容可以做归档隐藏。
+        </div>
+    </div>
+
+</div>
+
+<footer>华脉 AI 族谱文化传承平台 · 操作帮助</footer>
+
+</body>
+</html>

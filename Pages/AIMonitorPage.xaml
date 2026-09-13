@@ -1,0 +1,105 @@
+<Page
+    x:Class="DesktopTool.Pages.AIMonitorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    <Grid Padding="20" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 标题栏 -->
+        <Grid Grid.Row="0" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="AI 监控" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" />
+            <Button Grid.Column="1" Content="刷新余额" Click="RefreshBtn_Click" VerticalAlignment="Center" />
+            <Button Grid.Column="2" Content="添加 Key" Click="AddKeyBtn_Click" VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- 平台选择 -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
+            <TextBlock Text="平台：" VerticalAlignment="Center" />
+            <ComboBox x:Name="PlatformCombo" Width="160" SelectionChanged="PlatformCombo_SelectionChanged">
+                <ComboBoxItem Content="DeepSeek" Tag="DeepSeek" IsSelected="True" />
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Key 卡片列表 -->
+        <ScrollViewer Grid.Row="2">
+            <ItemsControl x:Name="KeyItemsControl">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="320" Margin="0,0,12,12"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1" CornerRadius="10" Padding="16">
+                            <StackPanel Spacing="10">
+                                <!-- 头部：平台 + 备注 + 删除 -->
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding PlatformText}" Style="{StaticResource CaptionTextBlockStyle}"
+                                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                        <TextBlock Text="{Binding Label}" Style="{StaticResource SubtitleTextBlockStyle}" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="删除" Click="DeleteKeyBtn_Click" Tag="{Binding Id}" Padding="8,2" FontSize="11" />
+                                </Grid>
+
+                                <!-- API Key -->
+                                <TextBlock Text="{Binding MaskedKey}" FontFamily="Consolas" FontSize="12"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" />
+
+                                <Border Height="1" Background="{ThemeResource CardStrokeColorDefaultBrush}" />
+
+                                <!-- 余额 -->
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="账户余额" Style="{StaticResource CaptionTextBlockStyle}"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                    <TextBlock Text="{Binding BalanceText}" FontSize="28" FontWeight="SemiBold" Foreground="{Binding BalanceBrush}" />
+                                </StackPanel>
+
+                                <!-- 明细（DeepSeek） -->
+                                <StackPanel Orientation="Horizontal" Spacing="20" Visibility="{Binding DetailVisibility}">
+                                    <StackPanel>
+                                        <TextBlock Text="赠送" FontSize="11" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Text="{Binding GrantedText}" FontSize="13" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="充值" FontSize="11" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Text="{Binding ToppedUpText}" FontSize="13" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="状态" FontSize="11" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                                        <TextBlock Text="{Binding StatusText}" FontSize="13" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+
+    </ScrollViewer>
+</Page>

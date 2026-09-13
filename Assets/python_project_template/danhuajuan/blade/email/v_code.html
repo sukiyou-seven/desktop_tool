@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css"/>
+    <!-- Import Vue 3 -->
+    <script src="//unpkg.com/vue@3"></script>
+    <!-- Import component library -->
+    <script src="//unpkg.com/element-plus"></script>
+    <title>验证码</title>
+    <!-- 所有样式已移到元素的 inline style 上 -->
+</head>
+<body style="height:100%;margin:0;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f3f4f6;">
+<div id="app" class="page"
+     style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:36px 16px;">
+    <div class="mains"
+         style="width:100%;max-width:420px;border-radius:12px;background:#ffffff;box-shadow:0 10px 30px rgba(16,24,40,0.08);overflow:hidden;">
+        <div class="hero"
+             style="padding:22px 20px;background:linear-gradient(135deg,#6dd5ed 0%,#2193b0 100%);color:white;display:flex;align-items:center;gap:12px;">
+            <div class="logo"
+                 style="width:52px;height:52px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;">
+                码
+            </div>
+            <div>
+                <h1 style="margin:0;font-size:16px;letter-spacing:0.2px">华脉 — 验证码通知</h1>
+                <p style="margin:0;font-size:12px;opacity:0.95">用于确认您的身份，请在 5 分钟内使用</p>
+            </div>
+        </div>
+        <div class="card-body" style="padding:20px">
+            <div class="greeting" style="font-size:15px;margin-bottom:8px">您好，<strong>{{user}}</strong></div>
+            <div class="hint" style="color:#6b7280;font-size:13px;margin-bottom:18px">您正在进行
+                <strong>{{status}}</strong> 操作。如非本人，请忽略此邮件。
+            </div>
+
+            <div class="code-box"
+                 style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border:1px dashed #e6eef6;padding:14px 16px;border-radius:8px">
+                <div id="verify-code" class="code-text"
+                     style="font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;font-size:28px;letter-spacing:6px;color:#0f172a">
+                    <strong>H</strong> - {{code}}
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                <el-button type="primary" size="small" @click="copyCode" @tap="copyCode">复制验证码</el-button>
+                <div class="muted" style="color:#6b7280">有效期：5 分钟</div>
+            </div>
+
+            <div class="controls" style="display:flex;gap:8px;margin-top:14px;align-items:center">
+                <div class="muted" style="color:#6b7280">如果无法复制，请手动选择验证码并复制。</div>
+            </div>
+        </div>
+        <div class="footer"
+             style="padding:14px 20px;background:#fff;border-top:1px solid #f1f5f9;font-size:12px;color:#6b7280">
+            如非本人操作，请忽略本邮件。若有疑问，请联系支持。
+        </div>
+    </div>
+</div>
+
+<script>
+    const copy_code = async () => {
+        const el = document.getElementById('verify-code');
+        const text = el.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            // fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+    }
+
+    const App = {
+        data() {
+            return {};
+        },
+        methods: {
+            async copyCode() {
+                const el = document.getElementById('verify-code');
+                if (!el) return ElementPlus.ElMessage.error('未找到验证码');
+                const text = el.textContent.trim();
+                if (!text) {
+                    return ElementPlus.ElMessage.error('验证码为空');
+                }
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(text);
+                    } else {
+                        // fallback
+                        const ta = document.createElement('textarea');
+                        ta.value = text;
+                        ta.setAttribute('readonly', '');
+                        ta.style.position = 'absolute';
+                        ta.style.left = '-9999px';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                    }
+                    ElementPlus.ElMessage.success('已复制到剪贴板');
+                } catch (err) {
+                    console.error(err);
+                    ElementPlus.ElMessage.error('复制失败，请手动复制');
+                }
+            }
+        }
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount('#app');
+</script>
+
+</body>
+</html>

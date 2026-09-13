@@ -1,0 +1,59 @@
+<Page
+    x:Class="DesktopTool.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DesktopTool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="24" />
+        </Style>
+    </Page.Resources>
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    
+
+    <Grid Padding="24,16,24,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <!-- <Button x:Name="BackBtn" Click="BackBtn_Click" Width="40" Height="40"> -->
+            <!--     <FontIcon Glyph="&#xE72B;" /> -->
+            <!-- </Button> -->
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="账号登录" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" VerticalAlignment="Top"  Width="Auto" Margin="0,20,0,0">
+            <StackPanel Spacing="16">
+                <TextBlock Text="Seraphine AI Tool" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Stretch" />
+                <TextBlock Text="登录以同步你的配置与数据" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" />
+
+                <TextBox x:Name="UsernameBox" Header="用户名" PlaceholderText="仅英文和数字，3-32位" />
+                <PasswordBox x:Name="PasswordBox" Header="密码" PlaceholderText="至少6位" />
+
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"  Content="注册" Width="100" Click="RegisterBtn_Click" HorizontalAlignment="Left" />
+                    <Button Grid.Column="1" Content="登录" Width="100" Click="LoginBtn_Click" HorizontalAlignment="Right" />
+                </Grid>
+
+                <TextBlock x:Name="StatusText" FontSize="12" TextWrapping="Wrap" HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
+
+    </ScrollViewer>
+</Page>

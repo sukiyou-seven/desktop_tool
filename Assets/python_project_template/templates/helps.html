@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助中心</title>
+    <style>
+        :root {
+            --bg: #f7f9fb;
+            --card: #ffffff;
+            --accent: #3b82f6;
+            --muted: #6b7280
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial
+        }
+
+        body {
+            background: var(--bg);
+            color: #111
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 28px auto;
+            padding: 20px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 16px
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem
+        }
+
+        .search {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px
+        }
+
+        .search input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px
+        }
+
+        .search button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:260px 1fr;
+            gap: 18px;
+            margin-top: 20px
+        }
+
+        nav.card {
+            background: var(--card);
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05)
+        }
+
+        nav .cat {
+            padding: 8px 6px;
+            border-radius: 6px;
+            color: var(--muted);
+            cursor: pointer
+        }
+
+        nav .cat.active {
+            background: #eef2ff;
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .content .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04)
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eef2f6;
+            padding: 12px 0
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer
+        }
+
+        .faq-question h3 {
+            margin: 0;
+            font-size: 15px
+        }
+
+        .faq-answer {
+            margin-top: 10px;
+            color: var(--muted);
+            display: none;
+            font-size: 16px;
+            line-height: 30px;
+            letter-spacing: 4px;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block
+        }
+
+        .meta {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px
+        }
+
+        .contact {
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns:1fr
+            }
+
+            .container {
+                padding: 12px
+            }
+        }
+    </style>
+    <script>
+        // Client-side search + accordion behavior
+        document.addEventListener('DOMContentLoaded', function () {
+            const search = () => {
+                const q = document.getElementById('q').value.trim().toLowerCase();
+                const items = document.querySelectorAll('.faq-item');
+                items.forEach(it => {
+                    const txt = (it.dataset.title || '') + ' ' + (it.dataset.content || '');
+                    const visible = q === '' || txt.indexOf(q) !== -1;
+                    it.style.display = visible ? '' : 'none';
+                })
+            }
+
+            document.getElementById('q').addEventListener('input', search);
+            document.getElementById('btnSearch').addEventListener('click', search);
+
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.addEventListener('click', function () {
+                    const item = this.closest('.faq-item');
+                    item.classList.toggle('open');
+                })
+            })
+            // category click
+            document.querySelectorAll('nav .cat').forEach(c => {
+                c.addEventListener('click', function () {
+                    document.querySelectorAll('nav .cat').forEach(x => x.classList.remove('active'));
+                    this.classList.add('active');
+                    const cat = this.dataset.cat;
+                    document.querySelectorAll('.faq-item').forEach(it => {
+                        it.style.display = (cat === 'all' || it.dataset.category === cat) ? '' : 'none'
+                    })
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>帮助中心 / 常见问题</h1>
+            <div class="small">在这里你可以快速找到常见问题的解答，或提交反馈联系我们</div>
+        </div>
+    </header>
+
+    <div class="search">
+        <input id="q" type="search" placeholder="搜索问题，例如：登录、注册、上传、接口"/>
+        <button id="btnSearch">搜索</button>
+    </div>
+
+    <div class="grid">
+        <nav class="card">
+            <div style="font-weight:600;margin-bottom:8px">分类</div>
+            <div class="cat active" data-cat="all">全部</div>
+            <div class="cat" data-cat="api">家族 族谱 帮助</div>
+            <div class="cat" data-cat="account">账号与登录</div>
+            <div class="cat" data-cat="upload">文件与上传</div>
+            <div class="cat" data-cat="payment">支付与收费</div>
+            <div class="cat" data-cat="other">其他</div>
+        </nav>
+
+        <main class="content">
+            <div class="card">
+                <h2 style="margin-top:0">常见问题</h2>
+
+                <!-- FAQ items: add or remove as needed -->
+                <div class="faq-item" data-category="account" data-title="如何注册账号"
+                     data-content="如何注册账号 请填写邮箱和密码">
+                    <div class="faq-question">
+                        <h3>如何注册账号？</h3>
+                        <div class="meta">注册 · 可能相关：邮箱、验证码</div>
+                    </div>
+                    <div class="faq-answer">
+                        进入注册页面，填写邮箱与密码，完成邮箱验证码验证后即可注册成功。若收不到验证码，请检查垃圾邮件或联系客服。
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="account" data-title="忘记密码 重置"
+                     data-content="重置密码 忘记密码 邮箱 验证码">
+                    <div class="faq-question">
+                        <h3>忘记密码，如何重置？</h3>
+                        <div class="meta">账号 · 重置</div>
+                    </div>
+                    <div class="faq-answer">
+                        使用“忘记密码”功能，输入注册邮箱并完成验证码验证后即可重置密码。如果邮箱无法访问，请提交工单联系客服。
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="upload" data-title="上传 文件 大小 限制"
+                     data-content="上传限制 文件 大小 支持 格式">
+                    <div class="faq-question">
+                        <h3>文件上传有什么限制？</h3>
+                        <div class="meta">上传 · 限制</div>
+                    </div>
+                    <div class="faq-answer">
+                        单个文件大小上限为 50MB（可在配置中调整）。支持常见图片/文档格式（jpg/png/pdf/docx）。若上传失败请看网络与浏览器控制台错误信息。
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="api" data-title="接口 返回 401 授权"
+                     data-content="接口 401 未授权 token 登录">
+                    <div class="faq-question">
+                        <h3>家族板块使用帮助</h3>
+                        <div class="meta">家族 · 帮助</div>
+                    </div>
+                    <div class="faq-answer">
+                        在使用家族功能搭建族谱时，不少用户会第一时间选择直接创建覆盖全体亲属的大家族，
+                        但跨分支逐一向大家族内添加成员的操作繁琐、耗时长，体验并不顺畅。
+                        我们推荐采用「分层搭建、关联聚合」的方式搭建家族体系：您可以先以单个核心家庭（如父母子女组成的直系小家）为单位分别创建独立小家族，
+                        再将建好的各个小家族统一关联至同一个大家族下，即可实现“多个小家族同归一个大家族”的全族聚合效果，
+                        免去逐人添加的麻烦。 这种结构下的权限规则清晰透明：同属一个大家族的各小家族成员，
+                        可互相查看其他小家族的公开基础信息；所有成员也均可访问大家族公共主页，查看完整的全族谱系与族谱资料。
+                    </div>
+                </div>
+
+
+                <div class="faq-item" data-category="other" data-title="如何 联系 我们"
+                     data-content="联系 客服 邮箱 工单">
+                    <div class="faq-question">
+                        <h3>如何联系支持/提交反馈？</h3>
+                        <div class="meta">联系</div>
+                    </div>
+                    <div class="faq-answer">
+                        可以通过系统内“反馈”功能提交问题，或发送邮件到 support@example.com。提供问题描述、复现步骤和截图有助于更快处理。
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="contact card" style="margin-top:14px">
+                <div style="font-weight:600">仍然无法解决？联系我们</div>
+                <div class="small" style="margin-top:8px">填写以下信息提交问题：</div>
+                <form style="margin-top:10px;display:grid;gap:6px">
+                    <input placeholder="你的邮箱（用于回复）" id="user_email_addr"
+                           style="padding:8px;border:1px solid #e6eef8;border-radius:6px"/>
+                    <input placeholder="主题" style="padding:8px;border:1px solid #e6eef8;border-radius:6px"
+                           id="user_subject_str"/>
+                    <textarea placeholder="描述问题或错误（步骤、期望、截图链接）" rows="4" id="user_description"
+                              style="padding:8px;border:1px solid #e6eef8;border-radius:6px"></textarea>
+                    <div style="display:flex;gap:8px">
+                        <button type="button" onclick="send_questions()"
+                                style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:6px;border:none;cursor:pointer">
+                            提交
+                        </button>
+                        <button type="reset"
+                                style="padding:8px 12px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;cursor:pointer">
+                            清除
+                        </button>
+
+                        <script>
+
+                            function isEmail(str) {
+                                if (typeof str !== 'string') return false;
+                                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                return regex.test(str.trim());
+                            }
+
+
+                            // 用户反馈发送
+                            const send_questions = () => {
+                                const email = document.getElementById("user_email_addr").value
+                                const subject = document.getElementById("user_subject_str").value
+                                const describe = document.getElementById("user_description").value
+                                if (email === "" || subject === "" || describe === "") {
+                                    alert("请填写完整信息")
+                                    return
+                                }
+                                if(!isEmail(email)){
+                                    alert("请填写正确的邮箱")
+                                }
+                                var data = JSON.stringify({
+                                    "email_addr": email,
+                                    "subject": subject,
+                                    "describe": describe,
+                                });
+
+                                var xhr = new XMLHttpRequest();
+                                xhr.withCredentials = true;
+
+                                xhr.addEventListener("readystatechange", function () {
+                                    if (this.readyState === 4) {
+                                        console.log(this.responseText);
+                                    }
+                                });
+                                // todo: 这里目前是开放的 如果有人恶意利用将会导致数据库激增
+                                //       我们需要对这里进行额外处理
+                                //          我们这样处理 ?: 服务端对每ip进行限制?
+                                // 第一阶段: 接口方利用 redis 进行 ip限制 每分钟 每小时 每天 提交次数限制
+                                xhr.open("POST", "http://127.0.0.1:53100/helps/user/send/something");
+                                xhr.setRequestHeader("Content-Type", "application/json");
+
+                                xhr.send(data);
+                            }
+                        </script>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+</div>
+</body>
+</html>

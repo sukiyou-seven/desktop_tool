@@ -1,0 +1,33 @@
+[agent]
+max_read_files_per_turn = 3
+auto_discover_project = false
+
+[sandbox]
+workspace_root = "."
+bash = "deny"
+
+allow_write = ["${HOME}/OneDrive/桌面/doubaoWorks/HMZP/application/client_user", "${HOME}/OneDrive/桌面/doubaoWorks/HMZP/route/client", "${HOME}/OneDrive/桌面/doubaoWorks/HMZP/application/family", "${HOME}/OneDrive/桌面/doubaoWorks/HMZP/route/family"]
+[exclude]
+paths = [
+  ".venv/**",
+  "venv/**",
+  "__pycache__/**",
+  "*.pyc",
+  ".git/**",
+  ".idea/**",
+  ".vscode/**",
+  "*.log",
+  "logs/**",
+  ".pytest_cache/**",
+  "dist/**",
+  "build/**",
+  "static/**",
+    "text/**",
+    "*.pdf",
+    "*.txt",
+    "*.md",
+    "*.lock"
+]
+
+[permissions]
+allow = ["Edit", "Bash=cd /c/Users/84456/OneDrive/桌面/doubaoWorks/HMZP && for f in application/family/family.py application/family/family_world.py application/family/family_photo.py route/family/family.py; do echo \"===== $f =====\"; git diff \"$f\" | grep -E \"^[+]\" | grep -vE \"^[+]{3}\" | grep -Ei \"__log|add_family_log|创建家族|新增家族照片|删除家族照片|添加家族字辈|删除家族字辈|修改家族字辈|重置家族二维码|修改家族名称|操作者id|change_family_name|remake_join_link\"; done"]

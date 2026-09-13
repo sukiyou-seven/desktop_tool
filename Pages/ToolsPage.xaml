@@ -1,0 +1,179 @@
+<Page
+    x:Class="DesktopTool.Pages.ToolsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <!-- 已安装：卡片模板 -->
+        <DataTemplate x:Key="InstalledCardTemplate">
+            <StackPanel
+                Width="160"
+                Spacing="6"
+                Padding="8"
+                Background="Transparent"
+                IsTapEnabled="True"
+                Tapped="InstalledCard_Tapped"
+                RightTapped="InstalledCard_RightTapped"
+                Tag="{Binding}">
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="设置排序" Tag="{Binding}" Click="SetSortOrder_Click" />
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
+                <Border
+                    Width="96"
+                    Height="96"
+                    CornerRadius="10"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center">
+                    <Grid>
+                        <Image
+                            Source="{Binding IconFile}"
+                            Visibility="{Binding IconVisibility}"
+                            Stretch="Uniform"
+                            Width="64"
+                            Height="64"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                        <FontIcon
+                            Glyph="&#xE7C3;"
+                            FontSize="32"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Visibility="{Binding DefaultIconVisibility}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <Grid Height="44" VerticalAlignment="Top">
+                    <TextBlock
+                        Text="{Binding Name}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap"
+                        MaxLines="2"
+                        TextTrimming="CharacterEllipsis"
+                        Style="{StaticResource BodyTextBlockStyle}" />
+                </Grid>
+                <TextBlock
+                    Text="{Binding Version}"
+                    TextAlignment="Center"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- 未安装：列表项模板 -->
+        <DataTemplate x:Key="AvailableItemTemplate">
+            <Grid Padding="12,8" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock
+                        Text="{Binding Description}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Text="{Binding WingetId}"
+                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button
+                        Content="安装"
+                        Tag="{Binding}"
+                        Click="InstallBtn_Click"
+                        IsEnabled="{Binding NotBusy}"
+                        MinWidth="72" />
+                    <TextBlock
+                        Text="{Binding ProgressText}"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Visibility="{Binding ProgressVisibility}"
+                        MaxWidth="200"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    
+
+    <Grid Padding="24,16,24,24" RowSpacing="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- 标题 -->
+        <StackPanel Spacing="4">
+            <TextBlock Text="工具管理" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock
+                x:Name="SubtitleText"
+                Text="通过 winget 安装开发工具到软件工作目录"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <!-- 已安装 / 未安装 切换 -->
+        <SelectorBar
+            x:Name="MainTab"
+            Grid.Row="1"
+            SelectionChanged="MainTab_SelectionChanged">
+            <SelectorBarItem Text="已安装" Tag="installed" />
+            <SelectorBarItem Text="未安装" Tag="available" />
+        </SelectorBar>
+
+        <!-- 已安装：卡片网格 -->
+        <GridView
+            x:Name="InstalledGrid"
+            Grid.Row="2"
+            ItemTemplate="{StaticResource InstalledCardTemplate}"
+            SelectionMode="None"
+            IsItemClickEnabled="False"
+            Padding="0,12,0,0"
+            Visibility="Visible" />
+
+        <!-- 未安装：列表 -->
+        <Border
+            x:Name="AvailablePanel"
+            Grid.Row="2"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="8"
+            Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!-- 分组选择 -->
+                <ComboBox
+                    x:Name="GroupCombo"
+                    Grid.Row="0"
+                    PlaceholderText="选择分组"
+                    SelectionChanged="GroupCombo_SelectionChanged"
+                    Margin="4,0,4,8" />
+                <ListView
+                    x:Name="AvailableList"
+                    Grid.Row="1"
+                    ItemTemplate="{StaticResource AvailableItemTemplate}"
+                    SelectionMode="None" />
+            </Grid>
+        </Border>
+    </Grid>
+
+    </ScrollViewer>
+</Page>

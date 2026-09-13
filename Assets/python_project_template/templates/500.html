@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - 服务器内部错误</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sparks-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkFly 2s ease-out infinite;
+        }
+
+        @keyframes sparkFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 10;
+            padding: 40px 20px;
+            max-width: 800px;
+        }
+
+        .explosion-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: explosionPulse 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4));
+        }
+
+        @keyframes explosionPulse {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.1) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            75% {
+                transform: scale(1.1) rotate(-3deg);
+            }
+        }
+
+        .error-code {
+            font-size: 100px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+            background: linear-gradient(to right, #fff, #fff5e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            animation: codeShake 3s ease-in-out infinite;
+        }
+
+        @keyframes codeShake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-5px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .error-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .error-details {
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: left;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-details.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-details strong {
+            color: #fee140;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .error-details .error-line {
+            color: #ffe0e0;
+            line-height: 1.8;
+            word-wrap: break-word;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: white;
+            color: #fa709a;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: transparent;
+            color: white;
+            border-color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            border-color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #fa709a;
+        }
+
+        .warning-triangle {
+            position: fixed;
+            right: 8%;
+            top: 12%;
+            font-size: 130px;
+            opacity: 0.15;
+            animation: warningRotate 8s ease-in-out infinite;
+        }
+
+        @keyframes warningRotate {
+            0%, 100% {
+                transform: rotate(-10deg) scale(1);
+            }
+            50% {
+                transform: rotate(10deg) scale(1.1);
+            }
+        }
+
+        .gear-icon {
+            position: fixed;
+            left: 6%;
+            bottom: 10%;
+            font-size: 110px;
+            opacity: 0.1;
+            animation: gearSpin 12s linear infinite;
+        }
+
+        @keyframes gearSpin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .glitch-effect {
+            position: relative;
+        }
+
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-effect::before {
+            animation: glitch-1 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            -webkit-text-fill-color: white;
+            opacity: 0.8;
+        }
+
+        .glitch-effect::after {
+            animation: glitch-2 2s infinite;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            -webkit-text-fill-color: white;
+            opacity: 0.8;
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-3px, 3px);
+            }
+            40% {
+                transform: translate(-3px, -3px);
+            }
+            60% {
+                transform: translate(3px, 3px);
+            }
+            80% {
+                transform: translate(3px, -3px);
+            }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(3px, -3px);
+            }
+            40% {
+                transform: translate(3px, 3px);
+            }
+            60% {
+                transform: translate(-3px, -3px);
+            }
+            80% {
+                transform: translate(-3px, 3px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 80px;
+            }
+
+            .error-title {
+                font-size: 28px;
+            }
+
+            .error-message {
+                font-size: 16px;
+                padding: 15px;
+            }
+
+            .explosion-icon {
+                font-size: 20px;
+            }
+
+            .warning-triangle {
+                font-size: 80px;
+            }
+
+            .gear-icon {
+                font-size: 70px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sparks-bg" id="sparks"></div>
+
+<div class="warning-triangle">⚠️</div>
+<div class="gear-icon">⚙️</div>
+
+<div class="container">
+    <div class="explosion-icon">💥</div>
+    <div class="error-code glitch-effect" data-text="500">500</div>
+    <h1 class="error-title">服务器内部错误</h1>
+    <div class="error-message">
+        哎呀！服务器遇到了意外情况，无法完成您的请求1。<br>
+        我们的技术团队已经收到通知，正在紧急修复中。
+        <div class="error-details" id="errorDetails">
+            <strong>📋 错误详情：</strong>
+            <div class="error-line" id="errorMessage">
+                暂无显示
+            </div>
+        </div>
+        <button onclick="toggleDetails()"
+                style="margin-top: 15px; background: none; border: 1px solid white; color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 14px;">
+            📋 查看详情
+        </button>
+    </div>
+    <div class="button-group">
+        <button onclick="location.reload()" class="btn btn-primary">🔄 重试</button>
+<!--        <a href="/" class="btn btn-secondary">🏠 返回首页</a>-->
+    </div>
+</div>
+
+<script>
+    // 从 URL 参数或 sessionStorage 获取错误信息
+    function getErrorMessage() {
+        // 方式1: 从 URL 参数获取（通过 JavaScript 编码）
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMsg = urlParams.get('error');
+        if (errorMsg) {
+            return decodeURIComponent(errorMsg);
+        }
+
+        // 方式2: 从 sessionStorage 获取
+        const storedError = sessionStorage.getItem('last_error');
+        if (storedError) {
+            sessionStorage.removeItem('last_error'); // 读取后清除
+            return storedError;
+        }
+
+        return 'Internal Server Error\nThe server encountered an internal error and was unable to complete your request.';
+    }
+
+    // 生成火花效果
+    const sparksContainer = document.getElementById('sparks');
+
+    function createSpark() {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        spark.style.left = Math.random() * 100 + '%';
+        spark.style.top = Math.random() * 100 + '%';
+        spark.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        spark.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+        sparksContainer.appendChild(spark);
+
+        setTimeout(() => {
+            spark.remove();
+        }, 2000);
+    }
+
+    setInterval(createSpark, 300);
+
+    // 鼠标跟随效果
+    document.addEventListener('mousemove', (e) => {
+        const warning = document.querySelector('.warning-triangle');
+        const gear = document.querySelector('.gear-icon');
+
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+
+        warning.style.transform = `translate(${x * 20}px, ${y * 20}px) rotate(${x * 20 - 10}deg)`;
+        gear.style.transform = `translate(${-x * 15}px, ${-y * 15}px) rotate(${Date.now() / 100}deg)`;
+    });
+
+
+    const details = document.getElementById('errorDetails');
+    // 切换错误详情显示
+    function toggleDetails() {
+
+        const message = document.getElementById('errorMessage');
+
+        // 首次打开时设置错误信息
+        if (!details.classList.contains('show')) {
+            // message.textContent = getErrorMessage();
+        }
+
+        details.classList.toggle('show');
+    }
+    details.classList.toggle('show');
+</script>
+</body>
+</html>

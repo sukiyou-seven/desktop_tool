@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="DesktopTool.Pages.NewProjectDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DesktopTool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="12" MinWidth="560">
+        <ComboBox x:Name="TypeCombo" Header="工程类型" SelectionChanged="TypeCombo_SelectionChanged">
+            <ComboBoxItem Content="Python" />
+            <ComboBoxItem Content="Node" />
+            <ComboBoxItem Content="PHP" />
+            <ComboBoxItem Content="Go" />
+        </ComboBox>
+
+        <TextBox x:Name="NameBox" Header="工程名称" PlaceholderText="my-project" />
+
+        <StackPanel Spacing="4">
+            <TextBox x:Name="DirBox" Header="存储目录" PlaceholderText="选择父目录" IsReadOnly="True" />
+            <Button Content="浏览…" HorizontalAlignment="Left" Click="DirBtn_Click" />
+        </StackPanel>
+
+        <StackPanel x:Name="PythonPanel" Spacing="10" Visibility="Visible">
+            <ComboBox x:Name="PyTemplateCombo" Header="模板 / 框架">
+                <ComboBoxItem Content="纯目录" />
+                <ComboBoxItem Content="Flask" />
+                <ComboBoxItem Content="Django" />
+                <ComboBoxItem Content="FastAPI" />
+            </ComboBox>
+            <ComboBox x:Name="VenvModeCombo" Header="虚拟环境" SelectionChanged="VenvMode_SelectionChanged">
+                <ComboBoxItem Content="不创建" />
+                <ComboBoxItem Content="新建 venv" />
+                <ComboBoxItem Content="使用已有解释器" />
+            </ComboBox>
+            <ComboBox x:Name="BasePyCombo" Header="基解释器" />
+            <ComboBox x:Name="ExistingPyCombo" Header="选择已有解释器" Visibility="Collapsed" />
+        </StackPanel>
+
+        <StackPanel x:Name="NodePanel" Spacing="10" Visibility="Collapsed">
+            <ComboBox x:Name="NodeFrameworkCombo" Header="模板 / 框架">
+                <ComboBoxItem Content="Vue (Vite)" />
+                <ComboBoxItem Content="React (Vite)" />
+                <ComboBoxItem Content="Vite vanilla" />
+                <ComboBoxItem Content="Express" />
+                <ComboBoxItem Content="纯目录（不初始化）" />
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel x:Name="PhpPanel" Spacing="10" Visibility="Collapsed">
+            <ComboBox x:Name="PhpFrameworkCombo" Header="框架 / 模板">
+                <ComboBoxItem Content="Laravel" />
+                <ComboBoxItem Content="ThinkPHP" />
+                <ComboBoxItem Content="纯目录（不初始化）" />
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel x:Name="GoPanel" Spacing="10" Visibility="Collapsed">
+            <ComboBox x:Name="GoTemplateCombo" Header="模板 / 框架">
+                <ComboBoxItem Content="空项目（main.go）" />
+                <ComboBoxItem Content="Gin Web" />
+                <ComboBoxItem Content="CLI 工具" />
+                <ComboBoxItem Content="gRPC 服务" />
+            </ComboBox>
+            <TextBox x:Name="GoModuleBox" Header="模块名（go.mod module）" PlaceholderText="github.com/you/myproject" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

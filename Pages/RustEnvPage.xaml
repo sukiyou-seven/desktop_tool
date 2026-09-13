@@ -1,0 +1,206 @@
+<Page
+    x:Class="DesktopTool.Pages.RustEnvPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DesktopTool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+        <Style x:Key="CardCaptionStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        </Style>
+    </Page.Resources>
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Padding="24,16,24,0" Spacing="2">
+            <TextBlock Text="Rust 环境" Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Text="本机的 Rust 工具链、crate 与项目管理" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+        </StackPanel>
+
+        <SelectorBar Grid.Row="1" Margin="24,14,24,0" x:Name="PageSelectorBar" SelectionChanged="PageSelectorBar_SelectionChanged">
+            <SelectorBarItem Text="概览" Tag="overview" IsSelected="True" />
+            <SelectorBarItem Text="工具链" Tag="toolchain" />
+            <SelectorBarItem Text="包管理" Tag="packages" />
+            <SelectorBarItem Text="新建项目" Tag="newproject" />
+        </SelectorBar>
+
+        <Grid Grid.Row="2" Margin="24,12,24,16">
+            <ScrollViewer x:Name="OverviewPanel">
+                <StackPanel Spacing="16" Padding="0,8,0,8">
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="rustc" Style="{StaticResource CardCaptionStyle}" />
+                                <TextBlock x:Name="RustcVersionText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="cargo" Style="{StaticResource CardCaptionStyle}" />
+                                <TextBlock x:Name="CargoVersionText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="默认工具链" Style="{StaticResource CardCaptionStyle}" />
+                                <TextBlock x:Name="ToolchainText" FontSize="14" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="一键设置环境变量" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Grid.Column="0" x:Name="PathEnvCombo" PlaceholderText="选择 cargo 环境" DisplayMemberPath="DisplayName" HorizontalAlignment="Stretch" />
+                                <Button Grid.Column="1" Content="设置 PATH" Click="SetPathBtn_Click" />
+                                <Button Grid.Column="2" Content="移除 PATH" Click="RemovePathBtn_Click" />
+                            </Grid>
+                            <TextBlock x:Name="PathStatusText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="ToolchainPanel" Visibility="Collapsed">
+                <StackPanel Spacing="16" Padding="0,8,0,8">
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="rustup 工具链" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="刷新" Click="RefreshToolchainsBtn_Click" />
+                                <Button Content="安装 stable" Click="InstallStableBtn_Click" />
+                                <Button Content="安装 nightly" Click="InstallNightlyBtn_Click" />
+                                <Button Content="安装 rustup" Click="InstallRustupBtn_Click" />
+                            </StackPanel>
+                            <TextBlock x:Name="ToolchainStatus" Style="{StaticResource CardCaptionStyle}" />
+                            <ListView x:Name="ToolchainList" SelectionMode="None" MaxHeight="300">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:RustToolchainItem">
+                                        <Grid ColumnSpacing="12" Padding="0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{x:Bind Name}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                            <TextBlock Grid.Column="1" Text="{x:Bind IsDefault}" Style="{StaticResource CardCaptionStyle}" />
+                                            <Button Grid.Column="2" Content="卸载" Click="UninstallToolchainBtn_Click" Tag="{x:Bind}" Padding="8,2" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="PackagesPanel" Visibility="Collapsed">
+                <StackPanel Spacing="16" Padding="0,8,0,8">
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="项目目录" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="PkgProjectBox" PlaceholderText="选择含 Cargo.toml 的项目目录" IsReadOnly="True" />
+                                <Button Grid.Column="1" Content="…" Click="PkgPickDirBtn_Click" Padding="10,4" />
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Content="cargo build" Click="CargoBuildBtn_Click" />
+                                <Button Content="刷新依赖" Click="RefreshPackagesBtn_Click" />
+                            </StackPanel>
+                            <TextBlock x:Name="PkgStatusText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                            <ListView x:Name="PackageList" SelectionMode="None" MaxHeight="300">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:RustCrateItem">
+                                        <Grid ColumnSpacing="12" Padding="0,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{x:Bind Name}" TextWrapping="Wrap" />
+                                            <TextBlock Grid.Column="1" Text="{x:Bind Version}" Style="{StaticResource CardCaptionStyle}" MinWidth="80" />
+                                            <Button Grid.Column="2" Content="移除" Click="RemoveCrateBtn_Click" Tag="{x:Bind}" Padding="8,2" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="添加依赖" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="AddCrateBox" PlaceholderText="crate 名，如 serde" />
+                                <Button Grid.Column="1" Content="cargo add" Click="AddCrateBtn_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="NewProjectPanel" Visibility="Collapsed">
+                <StackPanel Spacing="16" Padding="0,8,0,8">
+                    <Border Style="{StaticResource CardBorderStyle}">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="新建 Rust 项目" Style="{StaticResource SubtitleTextBlockStyle}" />
+                            <TextBox x:Name="NewProjNameBox" Header="项目名称" PlaceholderText="myproject" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="NewProjDirBox" Header="存储目录" IsReadOnly="True" />
+                                <Button Grid.Column="1" Content="…" Click="NewProjPickDirBtn_Click" VerticalAlignment="Bottom" Padding="10,4" />
+                            </Grid>
+                            <ComboBox x:Name="NewProjTypeCombo" Header="项目类型">
+                                <ComboBoxItem Content="二进制 (--bin)" IsSelected="True" />
+                                <ComboBoxItem Content="库 (--lib)" />
+                            </ComboBox>
+                            <Button Content="创建项目" Click="CreateProjectBtn_Click" HorizontalAlignment="Left" />
+                            <TextBlock x:Name="NewProjStatusText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+
+    </ScrollViewer>
+</Page>

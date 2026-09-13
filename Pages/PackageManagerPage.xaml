@@ -1,0 +1,125 @@
+<Page
+    x:Class="DesktopTool.Pages.PackageManagerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DesktopTool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    <Grid Padding="24,16,24,24" RowSpacing="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 标题 + 返回 + 环境信息 -->
+        <StackPanel Spacing="4">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button
+                    x:Name="BackBtn"
+                    Click="BackBtn_Click"
+                    Padding="10,6"
+                    VerticalAlignment="Center"
+                    ToolTipService.ToolTip="返回 Python 环境">
+                    <FontIcon Glyph="&#xE72B;" FontSize="14" />
+                </Button>
+                <TextBlock Text="包管理" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock x:Name="EnvNameText" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="Wrap" />
+                <TextBlock
+                    x:Name="EnvPathText"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    TextWrapping="Wrap"
+                    IsTextSelectionEnabled="True"
+                    VerticalAlignment="Bottom" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- 工具行：pip 源 + 搜索 + 刷新 -->
+        <Grid Grid.Row="1" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="pip 源" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <ComboBox x:Name="SourceCombo" MinWidth="200" SelectionChanged="SourceCombo_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <TextBox
+                x:Name="SearchBox"
+                Grid.Column="1"
+                PlaceholderText="筛选包…"
+                TextChanged="SearchBox_TextChanged" />
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                <ProgressRing x:Name="BusyRing" Width="20" Height="20" IsActive="False" VerticalAlignment="Center" />
+                <Button x:Name="RefreshBtn" Content="刷新" Click="RefreshBtn_Click" />
+            </StackPanel>
+        </Grid>
+
+        <!-- 包列表 -->
+        <ListView x:Name="PackageList" Grid.Row="2" SelectionMode="None" HorizontalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnSpacing="8" Padding="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource BodyStrongTextBlockStyle}" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding Version}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="升级" Tag="{Binding}" Click="UpgradeBtn_Click" />
+                        <Button Grid.Column="2" Content="卸载" Tag="{Binding}" Click="UninstallBtn_Click" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- 安装 -->
+        <Grid Grid.Row="3" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                x:Name="InstallBox"
+                PlaceholderText="安装包，如 requests、numpy==2.0.0（使用所选源）"
+                KeyDown="InstallBox_KeyDown" />
+            <Button x:Name="InstallBtn" Grid.Column="1" Content="安装" Click="InstallBtn_Click" />
+        </Grid>
+
+        <!-- 日志 -->
+        <TextBox
+            x:Name="LogBox"
+            Grid.Row="4"
+            IsReadOnly="True"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            Height="150"
+            FontFamily="Consolas"
+            FontSize="12"
+            BorderThickness="1" />
+    </Grid>
+
+    </ScrollViewer>
+</Page>

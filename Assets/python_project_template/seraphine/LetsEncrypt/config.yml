@@ -1,0 +1,1 @@
+domain: 域名 email: 账号-填入有效邮箱即可 certbot_exec: certbot # 这里写死无需更改 

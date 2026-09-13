@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css"/>
+    <!-- Import Vue 3 -->
+    <script src="//unpkg.com/vue@3"></script>
+    <!-- Import component library -->
+    <script src="//unpkg.com/element-plus"></script>
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <div class="mains">
+        <el-card>
+            <div class="bodys">
+                <div class="text-center mar-tb">
+                    <el-text class="mx-1 ">您好，管理员</el-text>
+                </div>
+                <div class="mar-tb">
+                    <el-text class="mx-1">用户 {{ username }} ,提交了充值申请</el-text>
+                </div>
+
+                <div class="mar-tb">
+                    <el-text class="mx-1">充值金额为: {{ amount }}</el-text>
+                </div>
+
+                <div class="mar-tb">
+                    <el-text class="mx-1">充值地址为: {{ top_up_addr }}</el-text>
+                </div>
+
+                <div class="mar-tb">
+                    <el-text class="mx-1">若与您的充值信息一致，请点击下方连接进行充值</el-text>
+                </div>
+                <div class="mar-tb">
+                    <el-text class="mx-2">请务必与冷链链系统确认充值信息一致</el-text>
+                </div>
+                <div class="mar-tb">
+                    <a href="https://t.nexore.top/actions?order_id={{order_id}}&username={{username}}&amount={{amount}}&top_up_addr={{top_up_addr}}">
+                        确认充值
+                    </a>
+                </div>
+
+            </div>
+        </el-card>
+    </div>
+</div>
+</body>
+
+<script>
+    const App = {
+        data() {
+            return {};
+        },
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+</script>
+
+
+<style>
+    .mains {
+        margin: 20px auto 40px auto;
+        max-width: 370px;
+        text-align: center;
+    }
+    .bodys{
+        text-align: left;
+    }
+
+    .mx-1 {
+        font-size: 16px;
+    }
+    .mx-2 {
+        font-size: 22px;
+        color: #ff3366;
+    }
+    .text-center{
+        text-align: center;
+    }
+    .mar-tb{
+        margin: 10px 0;
+    }
+    .f-1{
+        font-size: 20px;
+    }
+</style>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//unpkg.com/element-plus/dist/index.css"/>
+    <!-- Import Vue 3 -->
+    <script src="//unpkg.com/vue@3"></script>
+    <!-- Import component library -->
+    <script src="//unpkg.com/element-plus"></script>
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+{#    <el-button>{{ message }}</el-button>#}
+    <div class="mains">
+        <el-card>
+            <div class="bodys">
+                <div class="text-center mar-tb">
+                    <el-text class="mx-1 ">您好，{{ nickname }}</el-text>
+                </div>
+                <div class="mar-tb">
+                    <el-text class="mx-1">您注册的账号为:{{ username }}</el-text>
+                </div>
+                <div>
+                    <el-text class="mx-1">您的密码是:</el-text>
+                    <el-text class="mx-1 f-1" type="primary">{{ password }}</el-text>
+                </div>
+            </div>
+        </el-card>
+    </div>
+</div>
+</body>
+
+<script>
+    const App = {
+        data() {
+            return {};
+        },
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+</script>
+
+
+<style>
+    .mains {
+        margin: 20px auto 40px auto;
+        max-width: 370px;
+        text-align: center;
+    }
+
+    .bodys {
+        text-align: left;
+    }
+
+    .mx-1 {
+        font-size: 16px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mar-tb {
+        margin: 10px 0;
+    }
+
+    .f-1 {
+        font-size: 20px;
+    }
+</style>
+
+</html>

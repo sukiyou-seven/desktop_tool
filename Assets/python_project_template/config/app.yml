@@ -1,0 +1,58 @@
+app:
+    # Use uwsgi to start developing production environments only begin
+    host: 0.0.0.0
+    port: 53100
+    port_check: false
+    debug: true
+    log_route: false
+    file_route: true
+    apifox: 'http://'
+    # Use uwsgi to start developing production environments only end
+
+    resources: '/*'
+    origins: '*'
+    allow_headers: "*"
+    expose_headers: "*"
+    supports_credentials: true
+    methods: [ 'GET', 'POST','OPTIONS' ]
+    open_get: false
+    image_prefix: 'http://192.168.0.102:53100/static/'
+
+
+
+mysql:
+    host: 0.0.0.0
+    port: 3306
+    user: 0
+    password: 0
+    database: 0
+
+#mongo:
+#    host: 61.160.195.251
+#    port: 45832
+#    database: tiktok_japan
+#    username: tiktok_japan
+#    password: xhNeyZLYz3Kmc6nm
+#    auth_source: tiktok_japan
+
+mongo:
+    host: localhost
+    port: 27017
+    database: hmzp
+    username: hmzp
+    password: CHANGE_ME_MONGO_PASSWORD
+    auth_source: hmzp
+
+REDIS:
+    REDIS_HOST: localhost
+    REDIS_PORT: 6379
+    REDIS_PASSWORD: CHANGE_ME_REDIS_PASSWORD
+    REDIS_DB: 6
+    REDIS_CACHE_TIMEOUT: 25920000
+
+TX:
+    SECRET_ID: CHANGE_ME_TX_SECRET_ID
+    SECRET_KEY: CHANGE_ME_TX_SECRET_KEY
+    FIREWALL_TEMPLATE_ID: lhft-qzy6pvtv
+    BY_NUMBER: 20
+    DRY_RUN: False

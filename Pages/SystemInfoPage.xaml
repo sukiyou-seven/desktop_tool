@@ -1,0 +1,277 @@
+<Page
+    x:Class="DesktopTool.Pages.SystemInfoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:DesktopTool.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+        <Style x:Key="CardCaptionStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        </Style>
+        <Style x:Key="InfoLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="InfoRowStyle" TargetType="Grid">
+            <Setter Property="Padding" Value="0,6" />
+            <Setter Property="ColumnSpacing" Value="16" />
+        </Style>
+    </Page.Resources>
+<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+
+    
+
+    <ScrollViewer>
+        <StackPanel Padding="24,16,24,24" Spacing="16">
+
+            <StackPanel Spacing="2">
+                <TextBlock Text="系统信息" Style="{StaticResource TitleTextBlockStyle}" />
+                <TextBlock Text="本机的操作系统、硬件与开发环境概览" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+
+            <!-- 概览卡片 -->
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="操作系统" Style="{StaticResource CardCaptionStyle}" />
+                        <TextBlock x:Name="OsOverviewText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock x:Name="OsVersionOverviewText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="处理器" Style="{StaticResource CardCaptionStyle}" />
+                        <TextBlock x:Name="CpuOverviewText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock x:Name="CpuCoreOverviewText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="内存" Style="{StaticResource CardCaptionStyle}" />
+                        <TextBlock x:Name="MemoryOverviewText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock x:Name="MemoryFreeOverviewText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3" Style="{StaticResource CardBorderStyle}">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="磁盘" Style="{StaticResource CardCaptionStyle}" />
+                        <TextBlock x:Name="DiskOverviewText" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock x:Name="DiskFreeOverviewText" Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- 系统详情 -->
+            <Expander
+                Header="系统详情"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <ItemsControl ItemsSource="{x:Bind OsItems, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Style="{StaticResource InfoRowStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Label}" Style="{StaticResource InfoLabelStyle}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Value}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- 处理器 -->
+            <Expander
+                Header="处理器"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <ItemsControl ItemsSource="{x:Bind CpuItems, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Style="{StaticResource InfoRowStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Label}" Style="{StaticResource InfoLabelStyle}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Value}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- 内存 -->
+            <Expander
+                Header="内存"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <ItemsControl ItemsSource="{x:Bind MemoryItems, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Style="{StaticResource InfoRowStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Label}" Style="{StaticResource InfoLabelStyle}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Value}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- 磁盘驱动器 -->
+            <Expander
+                Header="磁盘驱动器"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <ItemsControl ItemsSource="{x:Bind Disks, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Style="{StaticResource InfoRowStyle}" RowSpacing="4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                    <TextBlock Text="{Binding DriveType}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Summary}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Right" />
+                                <ProgressBar
+                                    Grid.Row="1" Grid.ColumnSpan="2"
+                                    Maximum="100"
+                                    Value="{Binding UsedPercent}"
+                                    Height="4" Margin="0,2,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+            <!-- Windows 激活 -->
+            <Expander
+                Header="Windows 激活"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <StackPanel>
+                    <Grid ColumnSpacing="12" Margin="0,6,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock x:Name="ActivationSummaryText" Text="读取中…" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            <TextBlock Text="查询激活状态；激活请使用合法持有的密钥与 KMS 授权" Style="{StaticResource CardCaptionStyle}" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="刷新" Click="RefreshActivationBtn_Click" VerticalAlignment="Center" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{x:Bind ActivationInfoItems, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Style="{StaticResource InfoRowStyle}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Label}" Style="{StaticResource InfoLabelStyle}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Value}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- 激活操作（封装系统官方 slmgr 命令，需要管理员权限） -->
+                    <StackPanel Spacing="8" Margin="0,12,0,0">
+                        <Border Height="1" Background="{ThemeResource CardStrokeColorDefaultBrush}" />
+                        <TextBlock Text="激活操作" FontSize="14" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        <TextBlock
+                            Text="以下操作封装 Windows 系统官方 slmgr 命令，需要管理员权限。请仅使用你合法持有的产品密钥与 KMS 授权。"
+                            Style="{StaticResource CardCaptionStyle}" TextWrapping="Wrap" />
+                        <TextBox
+                            x:Name="ProductKeyBox"
+                            PlaceholderText="产品密钥格式：XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="安装产品密钥" Click="InstallKeyBtn_Click" />
+                            <Button Content="立即激活" Click="ActivateBtn_Click" />
+                        </StackPanel>
+                        <TextBox
+                            x:Name="KmsServerBox"
+                            PlaceholderText="KMS 服务器地址：kms.example.com 或 kms.example.com:1688" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="设置 KMS 服务器" Click="SetKmsServerBtn_Click" />
+                            <Button Content="查看授权状态" Click="ShowLicenseBtn_Click" />
+                        </StackPanel>
+                        <TextBlock
+                            x:Name="ActivationOpResult"
+                            Text=""
+                            TextWrapping="Wrap"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
+            <!-- 开发环境 -->
+            <Expander
+                Header="开发环境"
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch">
+                <ItemsControl ItemsSource="{x:Bind DevItems, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Style="{StaticResource InfoRowStyle}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Label}" Style="{StaticResource InfoLabelStyle}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Value}" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+
+    </ScrollViewer>
+</Page>
