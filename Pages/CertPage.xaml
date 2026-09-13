@@ -41,6 +41,7 @@
         <SelectorBar Grid.Row="1" x:Name="ModeBar" SelectionChanged="ModeBar_SelectionChanged">
             <SelectorBarItem Text="DNS 自动申请（一键）" IsSelected="True" />
             <SelectorBarItem Text="手动申请（DNS）" />
+            <SelectorBarItem Text="已存在证书（续期）" />
         </SelectorBar>
 
         <!-- 配置卡片（两种模式共用） -->

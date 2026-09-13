@@ -104,9 +104,36 @@ public sealed partial class CertPage : Page
 
     private void ModeBar_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
     {
-        var auto = ReferenceEquals(sender.SelectedItem, sender.Items.Count > 0 ? sender.Items[0] : null);
-        AutoPanel.Visibility = auto ? Visibility.Visible : Visibility.Collapsed;
-        ManualPanel.Visibility = auto ? Visibility.Collapsed : Visibility.Visible;
+        if (AutoPanel is null || ManualPanel is null || InstalledCard is null) return;
+
+        var index = -1;
+        for (var i = 0; i < sender.Items.Count; i++)
+        {
+            if (ReferenceEquals(sender.SelectedItem, sender.Items[i])) { index = i; break; }
+        }
+
+        switch (index)
+        {
+            case 1: // 手动申请（DNS）
+                AutoPanel.Visibility = Visibility.Collapsed;
+                ManualPanel.Visibility = Visibility.Visible;
+                TxtCard.Visibility = _session is not null && _session.Challenges.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+                InstalledCard.Visibility = Visibility.Collapsed;
+                break;
+            case 2: // 已存在证书（续期）
+                AutoPanel.Visibility = Visibility.Collapsed;
+                ManualPanel.Visibility = Visibility.Collapsed;
+                TxtCard.Visibility = Visibility.Collapsed;
+                InstalledCard.Visibility = Visibility.Visible;
+                RefreshInstalledCerts();
+                break;
+            default: // 0：DNS 自动申请（一键）
+                AutoPanel.Visibility = Visibility.Visible;
+                ManualPanel.Visibility = Visibility.Collapsed;
+                TxtCard.Visibility = Visibility.Collapsed;
+                InstalledCard.Visibility = Visibility.Collapsed;
+                break;
+        }
     }
 
     private static AcmeDirectoryInfo DirectoryInfo(string caName)
